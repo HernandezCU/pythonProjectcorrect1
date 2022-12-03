@@ -147,7 +147,9 @@ def enemies_lvl4():
         xy2 = random.randint(25, 52)
         Ene4special.append(pygame.Rect(random.randint(1500, 5000), random.randint(1, 340), xy2, xy2))
         pygame.draw.rect(screen, ORANGE, Ene4special[-1])
-
+    for i in Ene4sspecial:
+        asteroid = pygame.transform.scale(asteroid_img, (xy2, xy2))
+        screen.blit(asteroid, (i.x, i.y))
 
 def enemies_lvl5():
     xy1 = random.randint(25, 52)
@@ -161,6 +163,9 @@ def enemies_lvl5():
         xy2 = random.randint(25, 52)
         Ene5special.append(pygame.Rect(random.randint(1500, 5000), random.randint(1, 340), xy2, xy2))
         pygame.draw.rect(screen, ORANGE, Ene5special[-1])
+    for i in Ene5special:
+        asteroid = pygame.transform.scale(asteroid_img, (xy2, xy2))
+        screen.blit(asteroid, (i.x, i.y))
     for i in range(0, 3):
         Ene5special2.append(pygame.Rect(random.randint(700, 1900), random.randint(1, 340), 90, 90))
         pygame.draw.rect(screen, BROWN, Ene5special2[-1])
@@ -178,6 +183,9 @@ def enemies_lvl6():
         xy2 = random.randint(25, 52)
         Ene6special.append(pygame.Rect(random.randint(1500, 5000), random.randint(1, 340), xy2, xy2))
         pygame.draw.rect(screen, ORANGE, Ene6special[-1])
+    for i in Ene6special:
+        asteroid = pygame.transform.scale(asteroid_img, (xy2, xy2))
+        screen.blit(asteroid, (i.x, i.y))
     for i in range(0, 3):
         Ene6special2.append(pygame.Rect(random.randint(700, 1900), random.randint(1, 340), 90, 90))
         pygame.draw.rect(screen, BROWN, Ene6special2[-1])
@@ -196,10 +204,12 @@ def enemies_lvl7():
         pygame.draw.rect(screen, RED, Ene7[-1])
     for i in range(0, 5):
         xy = random.randint(25, 52)
+        print(xy)
         Ene7special.append(pygame.Rect(random.randint(1500, 5000), random.randint(1, 340), xy, xy))
         pygame.draw.rect(screen, ORANGE, Ene7special[-1])
+        print(xy)
     for i in range(0, 4):
-        Ene7special2.append(pygame.Rect(random.randint(700, 2000), random.randint(1, 340), 50, 20))
+        Ene7special2.append(pygame.Rect(random.randint(700, 2000), random.randint(1, 340), 60, 20))
         pygame.draw.rect(screen, GREEN, Ene7special2[-1])
 
 
@@ -278,6 +288,8 @@ def move_lvl4():
         pygame.time.delay(1)
         j.x -= 10
         pygame.draw.rect(screen, ORANGE, j)
+        asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
+        screen.blit(asteroid, (j.x, j.y))
 
 
 def move_lvl5():
@@ -295,6 +307,8 @@ def move_lvl5():
         pygame.time.delay(1)
         g.x -= 10
         pygame.draw.rect(screen, ORANGE, g)
+        asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
+        screen.blit(asteroid, (g.x, g.y))
 
 
 def move_lvl6():
@@ -312,6 +326,8 @@ def move_lvl6():
         pygame.time.delay(1)
         g.x -= 10
         pygame.draw.rect(screen, ORANGE, g)
+        asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
+        screen.blit(asteroid, (g.x, g.y))
     for f in Ene6special3:
         pygame.time.delay(1)
         f.x -= 4
@@ -320,8 +336,6 @@ def move_lvl6():
 
 
 def move_lvl7():
-    def growth():
-        h.height += 1
     for i in Ene7:
         pygame.time.delay(1)
         i.x -= 4
@@ -332,17 +346,19 @@ def move_lvl7():
         pygame.time.delay(1)
         g.x -= 10
         pygame.draw.rect(screen, ORANGE, g)
+        asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
+        screen.blit(asteroid, (g.x, g.y))
+    mode = 'grow'
     for h in Ene7special2:
         pygame.time.delay(1)
         h.x -= 4
-        growth()
+        if h.height >= 170 and mode == 'grow':
+            h.height += 1
+        if h.height >= 170 and mode == 'shrink':
+            h.height += 1
+        else:
+            h.height += 1
         pygame.draw.rect(screen, GREEN, h)
-        if h.height >= 170:
-            def growth():
-                h.height -= 1
-        elif h.height <= 60:
-            def growth():
-                h.height += 1
 
 
 def move_lvl8():
@@ -531,12 +547,12 @@ lvl9count = 0
 #Images
 player_img = pygame.image.load('player_rocket.png').convert_alpha()
 icon = pygame.image.load('icon.png')
-player = pygame.transform.scale(player_img, (70, 30)).convert_alpha()
+player = pygame.transform.scale(player_img, (70, 60)).convert_alpha()
 #player = pygame.Surface.set_alpha(player_img, 100)
 #([10, 10], pygame.SRCALPHA, 32, player_img)
 
 player_explosion = pygame.image.load('player_explosion.png').convert()
-explosion = pygame.transform.scale(player_explosion, (70, 30)).convert()
+explosion = pygame.transform.scale(player_explosion, (70, 60)).convert()
 
 music = pygame.mixer.music.load('space-chillout-14194.mp3')
 pygame.mixer.music.play(100)
