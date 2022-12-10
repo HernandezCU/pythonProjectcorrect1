@@ -147,7 +147,7 @@ def enemies_lvl4():
         xy2 = random.randint(25, 52)
         Ene4special.append(pygame.Rect(random.randint(1500, 5000), random.randint(1, 340), xy2, xy2))
         pygame.draw.rect(screen, ORANGE, Ene4special[-1])
-    for i in Ene4sspecial:
+    for i in Ene4special:
         asteroid = pygame.transform.scale(asteroid_img, (xy2, xy2))
         screen.blit(asteroid, (i.x, i.y))
 
@@ -288,7 +288,7 @@ def move_lvl4():
         pygame.time.delay(1)
         j.x -= 10
         pygame.draw.rect(screen, ORANGE, j)
-        asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
+        asteroid = pygame.transform.scale(asteroid_img, (j.width, j.height))
         screen.blit(asteroid, (j.x, j.y))
 
 
@@ -335,6 +335,9 @@ def move_lvl6():
     # Player Functions
 
 
+mode = 'grow'
+
+
 def move_lvl7():
     for i in Ene7:
         pygame.time.delay(1)
@@ -348,16 +351,27 @@ def move_lvl7():
         pygame.draw.rect(screen, ORANGE, g)
         asteroid = pygame.transform.scale(asteroid_img, (g.width, g.height))
         screen.blit(asteroid, (g.x, g.y))
-    mode = 'grow'
     for h in Ene7special2:
         pygame.time.delay(1)
         h.x -= 4
-        if h.height >= 170 and mode == 'grow':
-            h.height += 1
-        if h.height >= 170 and mode == 'shrink':
-            h.height += 1
-        else:
-            h.height += 1
+        # if h.height >= 170 and mode == 'grow':
+        #     h.height += 1
+        # if h.height >= 170 and mode == 'shrink':
+        #     h.height += 1
+        # else:
+        #     h.height += 1
+        global mode
+        if mode == 'grow':
+            if h.height >= 170:
+                mode = 'shrink'
+            else:
+                h.height += 1
+        if mode == 'shrink':
+            if h.height <= 0:
+                mode = 'grow'
+            else:
+                h.height -= 1
+
         pygame.draw.rect(screen, GREEN, h)
 
 
@@ -413,8 +427,8 @@ def collides(playerrect, enelist):
         screen.blit(explosion, box.to_tuple())
         global gameover
         gameover = True
-        explode_sound = pygame.mixer.music.load('mixkit-arcade-chiptune-explosion-1691.wav')
-        pygame.mixer.music.play(1)
+        # explode_sound = pygame.mixer.music.load('mixkit-arcade-chiptune-explosion-1691.wav')
+        # pygame.mixer.music.play(1)
         pygame.display.flip()
     # if 3 > level > 0:
     #     if collide > -1:
@@ -554,8 +568,8 @@ player = pygame.transform.scale(player_img, (70, 60)).convert_alpha()
 player_explosion = pygame.image.load('player_explosion.png').convert()
 explosion = pygame.transform.scale(player_explosion, (70, 60)).convert()
 
-music = pygame.mixer.music.load('space-chillout-14194.mp3')
-pygame.mixer.music.play(100)
+# music = pygame.mixer.music.load('space-chillout-14194.mp3')
+# pygame.mixer.music.play(100)
 
 
 
@@ -565,6 +579,7 @@ asteroid_img = pygame.image.load('enemy_asteroid.png').convert()
 #player.set_colorkey((255, 255, 255))
 #player.set_colorkey((175, 175, 175))
 # Game Loop
+
 while running:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -866,7 +881,7 @@ while running:
             lvl9 = True
             lvl9_create = False
         if lvl9:
-            move_lvl9()
+            #move_lvl9()
             if -2000 >= Ene9[0].x >= -2100:
                 Ene9.clear()
                 lvl9count += 1
